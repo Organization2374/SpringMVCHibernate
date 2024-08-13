@@ -4,7 +4,7 @@ import com.yurov.models.User;
 
 import java.util.List;
 
-public interface UsersService {
+public interface UserService {
 
     List<User> findAll();
     User findById(Long id);

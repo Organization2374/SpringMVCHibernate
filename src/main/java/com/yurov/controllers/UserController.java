@@ -1,7 +1,7 @@
 package com.yurov.controllers;
 
 import com.yurov.models.User;
-import com.yurov.services.UsersService;
+import com.yurov.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,22 +14,22 @@ public class UserController {
 
     private static final String REDIRECT_HOME = "redirect:/";
 
-    private final UsersService usersService;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UsersService usersService) {
-        this.usersService = usersService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("users", usersService.findAll());
+        model.addAttribute("users", userService.findAll());
         return "/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", usersService.findById(id));
+        model.addAttribute("user", userService.findById(id));
         return "/show";
     }
 
@@ -43,13 +43,13 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "/new";
         }
-        usersService.save(user);
+        userService.save(user);
         return REDIRECT_HOME;
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("user", usersService.findById(id));
+        model.addAttribute("user", userService.findById(id));
         return "/edit";
     }
 
@@ -59,13 +59,13 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "/edit";
         }
-        usersService.update(id, user);
+        userService.update(id, user);
         return REDIRECT_HOME;
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Long id) {
-        usersService.delete(id);
+        userService.delete(id);
         return REDIRECT_HOME;
     }
 }
