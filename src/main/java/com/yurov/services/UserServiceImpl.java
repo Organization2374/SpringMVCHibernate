@@ -1,7 +1,7 @@
 package com.yurov.services;
 
-import com.yurov.dao.UserDao;
 import com.yurov.models.User;
+import com.yurov.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,33 +12,34 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
-    private final UserDao userDao;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public List<User> findAll() {
-        return userDao.findAll();
+        return userRepository.findAll();
     }
 
     public User findById(Long id) {
-        return userDao.findById(id);
+        return userRepository.findById(id);
     }
 
     @Transactional
     public void save(User user) {
-        userDao.save(user);
+        userRepository.save(user);
     }
 
     @Transactional
     public void update(Long id, User user) {
-        userDao.update(id, user);
+        user.setId(id);
+        userRepository.save(user);
     }
 
     @Transactional
     public void delete(Long id) {
-        userDao.delete(id);
+        userRepository.deleteById(id);
     }
 }
